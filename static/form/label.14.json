@@ -1,0 +1,14 @@
+{
+  "items": [{
+      "labelValue": "1",
+      "labelName": "是"
+    },
+    {
+      "labelValue": "2",
+      "labelName": "否"
+    }
+  ],
+  "status": "success",
+  "code": 200,
+  "name": "is_case"
+}

@@ -1,0 +1,30 @@
+<div class="modal" ng-controller="KisBpmFormNamePopupCtrl">
+    <div class="modal-dialog modal-wide" ng-init="list()">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #304156; color: #FFFFFF; text-indent:35px">
+                <h2>{{'FORM.NAME.TITLE' | translate}}</h2>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <div class="pull-right" id="query-form" style="padding-bottom:10px;">
+                            <div style="float:left;margin-right:5px;">
+                                <input name="description" placeholder='表名' type="text" style="float:left;width:150px;margin-right:5px;" ng-model="description" class="form-control">
+                            </div>
+                
+                            <div class="btn-group">
+                                <button id="btn_search" ng-click="customSearch()" type="button" class="btn btn-primary btn-space">
+                                    <span class="fa fa-search" aria-hidden="true" class="btn-icon-space"></span>
+                                    搜索
+                                </button>
+                            </div>
+                        </div>
+                    <table id="table"></table>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="sever()" class="btn" type="button">保存</button>
+                <button ng-click="cancel()" class="btn" type="button">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

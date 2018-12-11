@@ -1,0 +1,253 @@
+<template>
+  <div class="container">
+    <el-form>
+      <el-row>
+        <el-form class="searchForm" :inline="true">
+          <el-row :gutter="20">
+            <el-form-item label-width="70px" label="完成状态" style="float: left">
+              <el-select v-model="completeState" clearable>
+                <el-option v-for="item in state" :key="item.stateValue" :label="item.stateName" :value="item.stateValue">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label-width="70px" label="模型名称">
+              <el-input style='min-width:120px;' v-model="processName"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button style="margin-left: 20px;" type="primary" @click="search" :loading="searchLoading">查询</el-button>
+            </el-form-item>
+          </el-row>
+        </el-form>
+        <el-table
+          :data="deploymentProcessListData"
+          v-loading="listLoading"
+          element-loading-text="拼命加载中"
+          border
+          highlight-current-row>
+          <el-table-column
+            prop="number"
+            label="编号">
+            <template slot-scope="scope">
+              {{scope.row.id}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="模型名称">
+            <template slot-scope="scope">
+              {{scope.row.name}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="状态">
+            <template slot-scope="scope">
+              {{scope.row.status === 0 ? '未部署' : '已部署'}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="创建时间" width="200">
+            <template slot-scope="scope">
+              {{scope.row['createTime '] | resetTime}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="版本号">
+            <template slot-scope="scope">
+              {{scope.row.version}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="流程说明">
+            <template slot-scope="scope">
+              {{scope.row.description}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="250">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="documentApproval(scope.row.onlyId, scope.row.form_name)"
+<<<<<<< .mine
+                type="text"
+                size="mini"
+                v-if="scope.row.status!=0">
+||||||| .r70
+                type="text"
+                size="small"
+                v-if="scope.row.status!=0">
+=======
+                type="default"
+                size="mini"
+                v-if="scope.row.status !== 0">
+>>>>>>> .r71
+                已部署
+              </el-button>
+              <el-button
+                @click.native.prevent="deployment(scope.row.id)"
+<<<<<<< .mine
+                type="text"
+                size="mini"
+||||||| .r70
+                type="text"
+                size="small"
+=======
+                type="primary"
+                size="mini"
+>>>>>>> .r71
+                v-else>
+                部署
+              </el-button>
+              <el-button
+                @click.native.prevent="goEditDeployment(scope.row.id)"
+                type="primary"
+                size="mini"
+                v-if="scope.row.status === 0"
+                >
+                修改
+              </el-button>
+              <el-button
+                @click.native.prevent="deleteDeployment(scope.row.id)"
+<<<<<<< .mine
+                type="text"
+                size="mini">
+                删除模型
+||||||| .r70
+                type="text"
+                size="small">
+                删除模型
+=======
+                type="danger"
+                size="mini">
+                删除
+>>>>>>> .r71
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          style="margin-top: 15px;"
+          background
+          layout="total, prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          @current-change="handleCurrentPageChange">
+        </el-pagination>
+      </el-row>
+    </el-form>
+  </div>
+</template>
+<script>
+  import moment from 'moment'
+  import { deploymentProcessList, deploymentBtn, deleteDeploymentProcess } from '@/api/deploymentProcess'
+  export default {
+    name: 'taskFlow',
+    data() {
+      return {
+        total: -1,
+        pageNum: 1,
+        pageSize: 10,
+        state: [{
+          stateValue: 0,
+          stateName: '未部署'
+        }, {
+          stateValue: 1,
+          stateName: '已部署'
+        }],
+        completeState: '',
+        processName: '',
+        listLoading: true,
+        searchLoading: false,
+        deploymentProcessListData: []
+      }
+    },
+    filters: {
+      resetTime: function(value) {
+        if (!value) return ''
+        return moment(value).format('YYYY-MM-DD HH:mm:ss')
+      }
+    },
+    mounted() {
+      this.fetchData()
+    },
+    methods: {
+      /* 获取数据列表 */
+      fetchData(name, status, pageNum, pageSize) {
+        this.listLoading = true
+        return deploymentProcessList().then(resp => {
+          this.deploymentProcessListData = resp.data.data.rows
+          this.total = resp.data.data.total
+          this.pageNum = resp.data.data.pageNum
+          this.pageSize = resp.data.data.pageSize
+          this.listLoading = false
+          return resp
+        }).catch(e => {
+          this.listLoading = false
+        })
+      },
+      /* 删除部署 */
+      deleteDeployment(modelId) {
+        this.$confirm('此操作将永久删除该表单，是否继续', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.listLoading = true
+          deleteDeploymentProcess(modelId).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功',
+              duration: 1000,
+              onClose: () => {
+                this.fetchData(this.processName, this.completeState, this.pageNum, this.pageSize)
+              }
+            })
+          }).catch(e => {
+            this.listLoading = false
+          })
+        })
+        // deleteDeploymentProcess(modelId).then(resp => {
+        //   this.deploymentProcessListData = resp.data.data.rows
+        // })
+      },
+      /* table表格当前页事件 */
+      handleCurrentPageChange(currentPage) {
+        console.log(1)
+        this.listLoading = true
+        this.pageNum = currentPage
+        this.fetchData(this.processName, this.completeState, this.pageNum, this.pageSize)
+      },
+      /* 点击查询 */
+      search() {
+        if (this.pageNum !== 1) {
+          this.pageNum = 1
+        } else {
+          this.searchLoading = true
+          this.fetchData(this.processName, this.completeState, this.pageNum, this.pageSize).then(resp => {
+            this.searchLoading = false
+          })
+        }
+      },
+      deployment(id) {
+        deploymentBtn(id).then(resp => {
+          if (resp.data.status === 200) {
+            this.$message({
+              type: 'success',
+              message: '部署成功',
+              duration: 1000,
+              onClose: () => {
+                this.fetchData(this.processName, this.completeState, this.pageNum, this.pageSize)
+              }
+            })
+          }
+        })
+      },
+      goEditDeployment(id) {
+        this.$router.push({ path: '/designProcess/deploymentProcess/editDeployment', query: { modelId: id }})
+      }
+    }
+  }
+</script>
+
+<style scoped>
+</style>

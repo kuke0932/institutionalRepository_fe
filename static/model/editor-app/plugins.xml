@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <plugins>
+    <plugin name="" source="version.js">
+    </plugin>
+    <plugin name="Signavio.Plugins.Loading" source="signavio.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.Loading" source="loading.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.CanvasResize" source="canvasResize.js">
+      <notusesin namespace="http://b3mn.org/stencilset/xforms#">
+      </notusesin>
+    </plugin>
+    <plugin name="ORYX.Plugins.RenameShapes" source="renameShapes.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.ProcessLink" source="processLink.js">
+      <requires namespace="http://b3mn.org/stencilset/bpmn1.1#">
+      </requires>
+    </plugin>
+    <!-- following plugins don't require Ext -->
+    <plugin name="ORYX.Plugins.Arrangement" source="arrangement.js">
+      <notusesin namespace="http://b3mn.org/stencilset/xforms#">
+      </notusesin>
+    </plugin>
+    <plugin name="ORYX.Plugins.Save" source="file.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.View" source="view.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.DragDropResize" source="dragdropresize.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.HighlightingSelectedShapes" source="shapeHighlighting.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.DragDocker" source="dragDocker.js">
+      <notusesin namespace="http://b3mn.org/stencilset/xforms#">
+      </notusesin>
+    </plugin>
+    <plugin name="ORYX.Plugins.AddDocker" source="addDocker.js">
+      <notusesin namespace="http://b3mn.org/stencilset/xforms#">
+      </notusesin>
+    </plugin>
+    <plugin name="ORYX.Plugins.SelectionFrame" source="selectionframe.js">
+      <notusesin namespace="http://b3mn.org/stencilset/xforms#">
+      </notusesin>
+    </plugin>
+    <plugin name="ORYX.Plugins.ShapeHighlighting" source="shapeHighlighting.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.Overlay" source="overlay.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.KeysMove" source="keysMove.js">
+    </plugin>
+    <plugin name="ORYX.Plugins.Layouter.EdgeLayouter" source="Layouter/edgeLayouter.js">
+    </plugin>
+    <!-- Begin: BPMN2.0 specific plugins -->
+    <plugin name="ORYX.Plugins.BPMN2_0" source="bpmn2.0/bpmn2.0.js">
+      <requires namespace="http://b3mn.org/stencilset/bpmn2.0#">
+      </requires>
+    </plugin>
+    <!-- End: BPMN2.0 specific plugins -->
+  </plugins>
+  <properties>
+    <property group="File" index="1">
+    </property>
+    <property group="Edit" index="2">
+    </property>
+    <property group="Undo" index="3">
+    </property>
+    <property group="Alignment" index="4">
+    </property>
+    <property group="Group" index="5">
+    </property>
+    <property group="Z-Order" index="6">
+    </property>
+    <property group="Docker" index="7">
+    </property>
+    <property group="Zoom" index="8">
+    </property>
+  </properties>
+</config>
